@@ -1,6 +1,6 @@
 import React from 'react'
-import { useState } from 'react'
-import './app.css'
+import { useState, useEffect } from 'react'
+import './App.css'
 
 const App = () => {
 
@@ -28,9 +28,23 @@ const App = () => {
   // }
 
   const deleteTodo=(index)=>{
-    const newTodos=todo.filter((item,i)=>i !== index)
-    setTodo(newTodos)
+    const deletedTodo = [...todo]
+    deletedTodo.splice(index,1)
+    // const newTodos=todo.filter((item,i)=>i !== index)
+    // setTodo(newTodos)
+    setTodo(deletedTodo)
   }
+
+  useEffect(()=>{
+    const savedTodos = JSON.parse(localStorage.getItem("todos"))
+    if(savedTodos){
+      setTodo(savedTodos)
+    }
+  },[])
+
+  useEffect(()=>{
+    localStorage.setItem("todos", JSON.stringify(todo))
+  },[todo])
 
   return (
     <div className="app">
